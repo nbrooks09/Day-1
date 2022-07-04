@@ -126,7 +126,7 @@ layout: true
 
 - Download and install [R](https://cloud.r-project.org/) or update if you had a previous installation
 - Download and install [RStudio](https://www.rstudio.com/) or update if you had a previous installation
-- Install the packages sent in the R script: `2022_summer_R_workshop_pkgs.R`
+- Install the packages sent in the "2022-R-Summer-Workshop-Setup.pdf"
 
 --
 
