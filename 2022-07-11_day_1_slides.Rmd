@@ -498,7 +498,7 @@ save(excel_df, googlesheet_df, csv_df, txt_df, dta_df,
      file = "./output/all_dfs.Rdata")
 
 # loads the Rdata file
-load("./output/all_dfs.Rdat")
+load("./output/all_dfs.Rdata")
 
 ```
 
