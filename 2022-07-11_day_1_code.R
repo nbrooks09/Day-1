@@ -193,14 +193,36 @@ txt_df <- read_delim("./data/HAP0006.txt", delim = ",")
 stata_df <- read_dta("./data/lead_mortality.dta")
 write_dta(stata_df, path = "./data/new_data.dta")
 
-                            # Bonus data types --------------------------------------
+# Bonus data types --------------------------------------
 # Tidycensus
-# bonus
+# To use tidycensus, you must obtain a Census API key. 
+# A key can be obtained from http://api.census.gov/data/key_signup.html.
+
+# first you need to give tidycensus your API key to use the data
+census_api_key("YOUR API KEY GOES HERE")
+
+# you need to kno what variable you want to pull - if you don't, then you can search
+vars <- load_variables(
+    year = 2020, 
+    dataset = "pl") # pl refers tot he 2020 census (you need to read the docs to find this out)
+
+vars %>% print(n = 50)
+
+# let's use the get_decennial() command to get some 2020 census data
+race20 <- get_decennial(
+    geography = "state", 
+    
+    # need to know what variable 
+    variables = c("P1_001N", "P1_002N", "P1_003N", "P1_004N",
+                  "P1_005N", "P1_006N", "P1_007N", "P1_008N"),
+    year = 2020)
+
+head(race20,n = 20)
+tail(race20,n = 20)
 
 # Web data 
-# bonus
 starwars <- read_html("https://rvest.tidyverse.org/articles/starwars.html")
-films <- starwars %>% # don't worry, we'll get to the %>% operator soon
+films <- starwars %>% 
     html_elements("section")
 films
 
@@ -211,13 +233,6 @@ title
 
 # If the page contains tabular data you can convert it directly to a dataframe 
 # with html_table():
-    
-html <- read_html("https://en.wikipedia.org/w/index.php?title=The_Lego_Movie&oldid=998422565")
-
-html %>% 
-    html_element(".tracklist") %>% 
-    html_table()
-
 url <- read_html("https://en.wikipedia.org/wiki/List_of_French_Open_men%27s_singles_champions")
 
 out <- html_nodes(url, "table") %>%
@@ -225,10 +240,10 @@ out <- html_nodes(url, "table") %>%
     html_table(fill = TRUE)
 
 # store as a tibble
-unemployment <- as_tibble(out[[1]],
+french_open <- as_tibble(out[[1]],
                           .name_repair = "minimal") 
 
-unemployment
+french_open
 
 ################################################################################
 ################################################################################
