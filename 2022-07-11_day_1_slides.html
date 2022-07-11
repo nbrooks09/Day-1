@@ -36,7 +36,7 @@ class: center, middle, inverse, title-slide
 
 # Welcome
 
-My name is [Nina Brooks](www.ninarbrooks.com) and I am an R enthusiast!
+My name is [Nina Brooks](www.ninarbrooks.com). I am an Assistant Professor in the UConn School of Public Policy and an R enthusiast!
 
 &lt;br&gt;
 --
@@ -65,10 +65,11 @@ By the end of this 2-day course, you will see how to do the following in R:
 - And most importantly, where to find help
 
 .footnote[
-*I relied heavily on the materials from [Stat545](https://stat545.com/), [Tidyverse Skills](https://jhudatascience.org/tidyversecourse/wrangle-data.html), [IPUMS PMA Data Analysis Hub](https://tech.popdata.org/pma-data-hub/), add more for creating this workshop
+*I relied heavily on the materials from [Stat545](https://stat545.com/), [Tidyverse Skills](https://jhudatascience.org/tidyversecourse/wrangle-data.html), and [IPUMS PMA Data Analysis Hub](https://tech.popdata.org/pma-data-hub/) for creating this workshop
 
 ]
-
+???
+Emphasize that this is a bit of a survey course - i'll cover a lot of topics in brief, but won't go into depth in any of them. also, this is not a statistics class - i will discuss certain topics you may have learned in other courses (hypothesis testing, regression, etc), but I will not spend any time in this workshop discussing the theory behind them - only demonstrating how to do them in R
 
 ---
 name: agenda
@@ -81,7 +82,6 @@ name: agenda
 
 3. Data manipulation with the [tidyverse](https://www.tidyverse.org/)
 
-4. Putting it together (at home practice)
 
 ]
 --
@@ -92,12 +92,10 @@ name: agenda
 
 3. Data Visualization
 
-4. Putting it together (at home practice)
-
 ]
 
 ???
-I will share these slides as well as all of the data and code used in the 2-day workshop.
+Everyone should have access to today's slides, as well as all of the data and code used in the 2-day workshop.
 
 I will also toggle between the slides and doing live demo in R
 
@@ -107,8 +105,8 @@ layout: true
 # R and RStudio
 
 ---
-## Did you do the pre-workshop setup?
 --
+## Did you do the pre-workshop setup?
 
 - Download and install [R](https://cloud.r-project.org/) or update if you had a previous installation
 - Download and install [RStudio](https://www.rstudio.com/) or update if you had a previous installation
@@ -138,6 +136,8 @@ R is **free** and open source, has a large group of users that provide support a
 RStudio is an integrated development environment or IDE for using R. You need to install R first to also use RStudio. I highly recommend using RStudio instead of just R because it provides a powerful and user-friendly interface for interacting with R.
 
 ???
+this is a pretty complex definition of R - the thing to take away is that it is a programming language with the ability to do statistical analysis and produce graphics (eg visualizations). 
+
 In fact, I will not even show anything in the base R environment.
 ---
 ## Add-on packages
@@ -228,7 +228,7 @@ example &lt;- "This is a string"
 ## [1] "This is a string"
 ```
 
-The highlighted lines of code tells R you want to print out whatever is stored in the object "x" or the object "example".
+The highlighted lines of code tell R you want to print out whatever is stored in the object "x" or the object "example".
 ---
 
 # R Scripts
@@ -241,7 +241,7 @@ It is also common to write code in R Markdown documents, which are saved with th
 
 --
 
-The big difference between an R script and an Rmd document is that Rmd documents are typically intended to weave together narrative text and code together, whereas R scripts contain only code. You'll see me use both in this workshop.
+The big difference between an R script and an Rmd document is that Rmd documents are typically intended to weave together narrative text and code together, whereas R scripts contain only code. If you wanted to write a report based on your analysis, you could include both the analysis, writing, and output (e.g. tables, plots, regressions) in a single R Markdown document that is compiled into a clean report.
 
 --
 
@@ -298,6 +298,17 @@ I recommend the following workflow:
 class: center, inverse, middle
 
 # LET'S SEE SOME R!
+???
+In R Studio walk through: 
+
+- panels
+	1. Source (where your R script is) 
+	2. console (this is where the output goes) 
+	3. environment (what's loaded in R, files, plots, help &amp; viewer)
+	4. "everything else"
+- can customize the layout (show this) &amp; change colors
+- R script - header, comments
+- demonstrate running code up through reading in data
 
 ---
 name: read_data
@@ -307,23 +318,27 @@ layout: true
 
 Data are stored in all sorts of different file formats and structures. We’ll discuss each of these common formats and discuss how to get them into R so you can start working with them!
 
-## Excel files
-Microsoft Excel files, which typically have the file extension .xls or .xlsx, store information in a workbook. Excel files can only be viewed in specific pieces of software (like Microsoft Excel), and thus are generally less flexible than many of the other formats of storing data. 
+--
 
-Additionally, Excel has certain defaults that make working with Excel data difficult outside of Excel. For example, Excel has a habit of aggressively changing data types. For example if you type 1/2, to mean 0.5, Excel assumes that this is a date and converts this information to January 2nd.
+## Excel files
+Microsoft Excel files, which typically have the file extension .xls or .xlsx, store information in a workbook. Excel files can only be viewed in specific pieces of software (like Microsoft Excel), and thus are generally less flexible than many other formats of storing data. 
+
+Additionally, Excel has certain defaults that make working with Excel data difficult outside of Excel. For example, Excel has a habit of aggressively changing data types. For example if you type 1/2, to mean 0.5, Excel assumes it is a date and converts that information to January 2nd.
 
 .footnote[
 *Special thanks to [Tidyverse Skills](https://jhudatascience.org/tidyversecourse/wrangle-data.html) for the content in this section.
 ]
 ---
 
-Reading Excel spreadsheets  into R is made possible thanks to the `readxl` package. You’ll need to install and load the package in before use.
+Reading Excel spreadsheets into R is made possible thanks to the `readxl` package. You’ll need to install and load the package in before use.
 
 
 ```r
 # install.packages("readxl")
 library(readxl)
 ```
+
+--
 
 You will use the function `read_excel()` to read an Excel file into your R Environment. The only required argument of this function is the path to the Excel file on your computer. In the following example, `read_excel()` would look for the file “filename.xlsx” in your **current working directory.** If the file were located somewhere else on your computer, you would have to provide the path to that file
 
@@ -350,7 +365,7 @@ library(googlesheets4)
 
 --
 
-The `googlesheets4` package allows R users to take advantage of the Google Sheets Application Programming Interface (API). Very generally, APIs allow different applications to communicate with one another. In this case, Google has released an API that allows other software to communicate with Google Sheets and retrieve data and information directly from Google Sheets.
+The `googlesheets4` package allows R users to take advantage of the Google Sheets Application Programming Interface (API). Very generally, APIs allow different applications to communicate with one another. In this case, Google has released an API that allows other software to communicate with Google Drive and retrieve data and information directly from Google Sheets.
 ---
 
 Every time you start a new session, you need to authenticate the use of the `googlesheets4` package with your Google account. 
@@ -372,13 +387,23 @@ read_sheet("2cdw-678dSPLfdID__LIt8eEFZPasdebgIGwHk") # note this is a fake id
 ---
 
 You can also navigate to your own sheets or to other people’s sheets using a URL.
-** change the below to have eval = T for final use **
 
 ```r
 # read Google Sheet into R with URL
 googlesheet_df &lt;- read_sheet("https://docs.google.com/spreadsheets/d/1FN7VVKzJJyifZFY5POdz_LalGTBYaC4SLB-X9vyDnbY/")
 
 googlesheet_df
+```
+
+```
+## # A tibble: 5 × 7
+##   name   hrs_working hrs_sleeping hrs_fun hrs_eating hrs_socializing hrs_other
+##   &lt;chr&gt;        &lt;dbl&gt;        &lt;dbl&gt;   &lt;dbl&gt;      &lt;dbl&gt;           &lt;dbl&gt;     &lt;dbl&gt;
+## 1 Damon            9            7       1          1               2         4
+## 2 Lilly            7            8       2          1               1         5
+## 3 Will             8            8       0          2               2         4
+## 4 Aisha            8            6       2          1               4         3
+## 5 Hassan           6            9       3          2               2         2
 ```
 
 ---
@@ -388,7 +413,7 @@ Like Excel Spreadsheets and Google Sheets, Comma-separated values (CSV) files al
 
 --
 
-One of the advantages of CSV files is their simplicity. CSVs are flexible files and are thus the preferred storage method for tabular data for many data scientists.
+One of the advantages of CSV files is their simplicity. CSVs are flexible files and are thus the preferred storage method for tabular data for many researchers.
 
 --
 
@@ -484,7 +509,8 @@ head(txt_df)
 ## # … with 5 more variables: bme_temp_C &lt;dbl&gt;, bme_humidity &lt;dbl&gt;,
 ## #   fuel_v_cell &lt;dbl&gt;, fuel_percent &lt;dbl&gt;, loggedAt &lt;dttm&gt;
 ```
-
+???
+view the hap.txt file (within R) just to show what a .txt file looks like
 ---
 
 ## Stata .dta files
@@ -584,18 +610,18 @@ layout:true
 # Data Wrangling
 ---
 
-Before we get into "data wrangling" in the Tidyverse, we have to first be sure we know what [tidy data](https://www.jstatsoft.org/article/view/v059i10) are.
+Before we get into "data wrangling" in the Tidyverse, we have to understand what [tidy data](https://www.jstatsoft.org/article/view/v059i10) are.
 
 --
 
 ## Principles of Tidy Data
 .footnote[*The tidyverse has a very strong opinion about what "tidy" data is. I agree with most of the principles, but think there are plenty of cases in which people need to work with "untidy" data by the tidyverse definitions.]
 
-1. Each variable you measure should be in one column.
+1. Each variable should be in one column.
 
 --
 
-2. Each different observation of that variable should be in a different row.
+2. Each observation of that variable should be in a different row.
 
 --
 
@@ -611,19 +637,23 @@ An example of different types of data could be demographic information about pat
 layout:false
 # Examples of  "untidy" data
 ![untidyy](./figs/untidy.png)
----
-
-# Tidying Process aka Data Wrangling
-![untidy_to_tidy](./figs/untidy_to_tidy.png)
-
+???
+What makes these "untidy"?
 ---
 
 # Example of tidy data
+
 ![tidy](./figs/tidy-1.png)
+---
+# Tidying Process aka Data Wrangling
+
+![untidy_to_tidy](./figs/untidy_to_tidy.png)
+
 ---
 # The pipe operator &lt;img src="./figs/pipe.png" alt="pipe" width="60"/&gt;
 Pipes, or `%&gt;%` are a `tidyverse` tool (officially contained in the `magrittr` package) for chaining multiple operations on the same data frame together. They can greatly simplify your code and make your operations more intuitive. I'll introduce them now, and soon you'll see how useful they can be! Note that if you're not using pipes, you'll have to specify a data frame directly as an argument to any commands you use.
 
+--
 
 
 ```r
@@ -706,6 +736,9 @@ tail(wdi)
 ---
 
 `names()` or `ls()` or `colnames()` will all give you the variable names of a dataframe:
+
+--
+
 
 ```r
 names(wdi)
@@ -859,11 +892,11 @@ head(wdi$`Series Name`) # that's why they're enclosed in `back ticks`
 
 ## Recap
 
-- You'll mostly be working with data frame and their cousin the tibble
+- You'll mostly be working with data frames and their cousin, the tibble
 
 - Use the `tidyverse`!!! This will provide a special type of data frame called a “tibble” that has nice default printing behavior, among other benefits.
 
-- When in doubt, str() something or print something.
+- When in doubt, `str()` something or print something.
 
 - Always understand the basic extent of your data frames: number of rows and columns.
 
@@ -888,10 +921,10 @@ library(tidyverse) # loads all of the core tidyverse packages
 ---
 # Cleaning up variable names
 
-`janitor` provides useful tools for cleaning messy data. The main functions we’ll cover from janitor are:
+`janitor` provides useful tools for cleaning messy data, such as:
 
-- `clean_names()` - clean names of a data frame
-- `tabyl()` - get a helpful summary of a variable (although I like the `tabulator` pacakge for this)
+- `clean_names()` - cleans the variable names of a data frame
+- `tabyl()` - provides cross-tabs get of variables (although I like the `tabulator` pacakge for this)
 - `get_dupes()` - identify duplicate observations
 
 In R, variable name must start with letter and can contain numbers, letters, underscores ('_') and periods ('.'). Special characters and spaces are not allowed. Tibbles will allow variable names that are not allowed in base R, but it can complicate things to have these. So let's fix this WDI data.
@@ -1731,23 +1764,33 @@ df %&gt;%
 ```
 ---
 
-But before just blindly removing duplicates, you might just want to see where they are. Or maybe you want to get rid of all duplicates of a single variable. You can use a few handy `dplyr` commands for this:
+But before just blindly removing duplicates, you might just want to see where they are. Or maybe you want to get rid of all duplicates of a single variable. You can use `janitor::get_dupes()` for this:
 
 ```r
 df %&gt;%
-    group_by(x) %&gt;%
-    add_tally() # gives you how many observations per value of x
+    get_dupes() 
 ```
 
 ```
-## # A tibble: 4 × 4
-## # Groups:   x [2]
-##   x         y     z     n
-##   &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;int&gt;
-## 1 a         2     5     3
-## 2 a         2     5     3
-## 3 a         0     5     3
-## 4 b         3     9     1
+## # A tibble: 2 × 4
+##   x         y     z dupe_count
+##   &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt;      &lt;int&gt;
+## 1 a         2     5          2
+## 2 a         2     5          2
+```
+
+```r
+df %&gt;%
+    get_dupes(x)
+```
+
+```
+## # A tibble: 3 × 4
+##   x     dupe_count     y     z
+##   &lt;chr&gt;      &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt;
+## 1 a              3     2     5
+## 2 a              3     2     5
+## 3 a              3     0     5
 ```
 
 ---
@@ -2238,7 +2281,7 @@ Today we covered:
 
 --
 
-There is a companion R script that has all the commands I used today, and a short "assignment" that tests the skills covered in today's workshop. 
+There is also a companion R script that has all the commands I used today: "2022_07_11_day_1_code.R"
 
 --
 

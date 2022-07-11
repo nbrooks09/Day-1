@@ -516,6 +516,14 @@ df %>%
     group_by(x) %>%
     add_tally() # gives you how many observations per value of x
 
+# use janitor:: get_dupes
+df %>%
+    get_dupes()
+
+# can also check for duplicates of a specific variable
+df %>%
+    get_dupes(x)
+
 # Identifying missing data
 ## first create a dataframe to use to demonstrate the process
 
