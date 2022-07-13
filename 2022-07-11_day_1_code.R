@@ -17,7 +17,6 @@ library(tidycensus) # an R package that allows users to interface with a select
 library(rvest) # a tidyverse package for webscraping
 library(glue) # tidyverse-adjacent package makes working with interpreted string literals simpler
 library(lubridate) # tidyverse package for working with dates
-
 library(tidyverse) # this loads the 8 core packages of the tidyverse
 library(tidylog) # this is a package that adds extra explanation of tidyverse commands
 
@@ -34,6 +33,7 @@ install.packages("tidycensus")
 install.packages("tidyverse")
 # you can comment these lines out if you already installed these packages
 
+#install.packages(c("tidycensus", "tidyverse"))
 ################################################################################
                             # Working directory #
 ################################################################################
@@ -43,7 +43,7 @@ install.packages("tidyverse")
 getwd()
 setwd("~/Documents")
 getwd()
-# setwd("~/Dropbox/UConn/Teaching/2022 - Summer R Workshop/workshop slides")
+setwd("/Users/nib21006/Dropbox/UConn/Teaching/2022-R-Summer-Workshop/Day-1")
 
 ################################################################################
                             # Get help within R #
@@ -63,7 +63,8 @@ class(x)
 x
 print(x)
 y
-x + y
+z <- x + y
+z
 x*y
 
 # Character strings
@@ -111,6 +112,7 @@ new_list
 class(new_list)
 
 new_list[[1]] # access elements of a list similarly, but typically use double brackets [[]]
+new_list[[3]][3]
 
 list_of_lists <- list(new_list, new_list)
 list_of_lists
@@ -130,11 +132,18 @@ df <- data.frame(
     rand = runif(10)
 )
 
+df
+
 class(df)
+
 df$x # access variables using the $ operator
+
 df[["x"]] # can also access by name (enclosed in quotes & with brackets)
-df[, 1] # or by position (this says give me the 1st column of the df)
+
+df[ , 1] # or by position (this says give me the 1st column of the df)
+
 class(df$x)
+
 class(df$z)
 
 head(df) # prints out just the first 6 rows
@@ -145,6 +154,7 @@ df2 <- data.frame(
     stringsAsFactors = T
 )
 
+df2$fac
 class(df2)
 class(df2$fac)
 levels(df2$fac)
@@ -157,11 +167,12 @@ tb <- tibble(
     c = 1,
     z = (a + b)^2 + c
 )
+
 class(tb)
 
 tb # notice how the first "thousands" place digit is underlined? tibbles have useful formatting elements like this
 
-# command for dataframes also work on tubbles
+# command for dataframes also work on tibbles
 head(tb) # prints out just the first 6 rows
 tail(tb) # prints out the last 6 rows
 
@@ -394,6 +405,7 @@ wdi %>%
 
 # rename
 wdi <- wdi %>%
+    clean_names() %>%
     select(-c(country_code, series_code)) %>%
     rename(
         country = country_name,
@@ -450,7 +462,11 @@ wdi_df <- wdi_long %>%
     pivot_wider(
         names_from = "series_short",
         values_from = "value"
-        )
+        ) %>%
+    mutate_at(
+        vars(electricity:gdppc),
+        as.numeric
+    )
 
 wdi_df
 
@@ -533,7 +549,8 @@ df <- tribble(
     "a", 2, 5,
     "a", NaN, 5,
     "b", 3, 9,
-    "c", NA, 8
+    "c", NA, 8,
+    "", 1, 7
 )
 
 df # view the data frame
@@ -541,6 +558,8 @@ df # view the data frame
 # count of missing (NA or NaN) observations by each variable 
 df %>%
     summarise_all(list(~sum(is.na(.))))
+
+summary(df)
 
 # to see which rows of data had missing values
 df %>% 
@@ -550,9 +569,17 @@ df %>%
 df %>% 
     drop_na
 
+
 # to drop rows if they contain NAs only of one variable you can use a filter
 df %>% 
     filter(!is.na(z)) # use ! to negate
+
+wdi_df %>%
+    group_by(country) %>%
+    summarise(missing_electricity = sum(is.na(electricity)),
+              n = n(),
+              pct_missing = missing_electricity/n) %>%
+    tail(n = 15)
 
 # Binding data
 # First, I'll create the LOTR data used in the slides.
